@@ -5,8 +5,8 @@ export async function GET() {
     {
       status: "healthy",
       timestamp: new Date().toISOString(),
-      framework: "agent-first",
-      version: "1.0.0"
+      framework: "agent-app-framework",
+      version: process.env.npm_package_version || "0.1.0"
     },
     {
       headers: {

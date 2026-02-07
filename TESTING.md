@@ -1,24 +1,37 @@
-# Testing Your Agent-First Framework
+# Testing Guide
 
-## Quick Agent Test
+## Prerequisites
 
-Test the framework from an agent's perspective:
-
-### 1. Start the dev server
 ```bash
+npm install
+cp .env.example .env.local
 npm run dev
 ```
 
-### 2. Register as an agent
+## Agent Authentication Flow
+
+### 1. Get a challenge
+
 ```bash
-curl -X POST "http://localhost:3000/api/auth/register" \
-  -H "Content-Type: application/json" \
-  -d '{"name":"TestAgent123"}'
+curl "http://localhost:3000/api/agent-auth?name=TestAgent"
 ```
 
-Save the `apiKey` from the response.
+You will receive reasoning tasks (reverse strings, sort arrays, etc.) along with a `seed` value.
 
-### 3. Test authentication
+### 2. Solve and authenticate
+
+Submit your answers in order, referencing the `seed` from step 1:
+
+```bash
+curl -X POST "http://localhost:3000/api/agent-auth" \
+  -H "Content-Type: application/json" \
+  -d '{"name":"TestAgent","seed":"YOUR_SEED","answers":["answer1","answer2"]}'
+```
+
+On success you receive an `apiKey` (bearer token).
+
+### 3. Test your token
+
 ```bash
 curl -X POST "http://localhost:3000/api/test" \
   -H "Authorization: Bearer YOUR_API_KEY" \
@@ -27,73 +40,93 @@ curl -X POST "http://localhost:3000/api/test" \
 ```
 
 ### 4. Join a session
+
 ```bash
 curl -X POST "http://localhost:3000/api/sessions/join" \
   -H "Authorization: Bearer YOUR_API_KEY"
 ```
 
 ### 5. Check session state
+
 ```bash
 curl "http://localhost:3000/api/sessions/SESSION_ID/state" \
   -H "Authorization: Bearer YOUR_API_KEY"
 ```
 
-### 6. Test skill.md endpoint
+### 6. Verify skill.md
+
 ```bash
-curl -H "User-Agent: AI-Agent" http://localhost:3000/.well-known/skill.md
+curl http://localhost:3000/.well-known/skill.md
+curl http://localhost:3000/skill.md
 ```
 
-## What Agents Should See
+Both endpoints should return the same skill documentation.
 
-✅ **Registration works** - Gets API key  
-✅ **Auth validation works** - Test endpoint accepts API key  
-✅ **Sessions work** - Can create and query sessions  
-✅ **Proper headers** - All responses include `X-Agent-Capable: true`  
-✅ **skill.md accessible** - Both `/.well-known/skill.md` and `/skill.md` work  
+## Automated Test with Claude
 
-## Testing Your Custom App
+`test-anthropic.sh` runs the full fishnet-auth flow end-to-end using Claude as the solver. It fetches a challenge, sends the tasks to the Anthropic API, submits the answers, and verifies protected route access.
 
-When you fork this framework:
+### Prerequisites
 
-1. **Update skill.md content** in `public/skill-content.md`
-2. **Replace demo endpoints** with your actual API routes
-3. **Test the agent flow**:
-   - Can agents discover your app via skill.md?
-   - Can they register and authenticate?
-   - Can they complete your core actions?
-   - Do error responses guide them correctly?
+- `jq` installed (`brew install jq` on macOS)
+- `curl` installed (comes with macOS/Linux)
+- An [Anthropic API key](https://console.anthropic.com/settings/keys)
+- The dev server running (`npm run dev`)
 
-## Agent Testing Checklist
+### Setup
 
-- [ ] Agent can curl `/.well-known/skill.md` and get clear instructions
-- [ ] Registration endpoint works and returns valid API keys
-- [ ] All protected endpoints validate API keys correctly
-- [ ] Error messages are actionable for agents
-- [ ] State transitions are clear in responses
-- [ ] `availableActions` arrays guide valid moves
-- [ ] Spectator URLs work for humans
+Set your Anthropic API key in `.env.local` or export it directly:
 
-## Human Testing
+```bash
+export ANTHROPIC_API_KEY=sk-ant-...
+```
 
-Visit http://localhost:3000 and confirm:
-- [ ] Landing page clearly shows agent vs human paths
-- [ ] Agent quick-start curl command is prominent
-- [ ] "I'M AN AGENT" button leads to skill.md
-- [ ] Framework features are explained clearly
+### Usage
 
-## Debugging Common Issues
+```bash
+# Make the script executable (first time only)
+chmod +x test-anthropic.sh
 
-**"Invalid API key"** - Check Authorization header format: `Bearer sk_test_...`  
-**"Session not found"** - Use the exact sessionId from join response  
-**"Not your session"** - Agent trying to access another agent's session  
-**CORS errors** - Add proper headers for frontend integration  
+# Run against local dev server (default)
+./test-anthropic.sh
+
+# Run against a custom URL with a custom agent name
+./test-anthropic.sh https://your-app.vercel.app MyAgent
+```
+
+### What the script does
+
+| Step | Description |
+|------|-------------|
+| 1 | Fetches a fishnet-auth challenge (`GET /api/agent-auth`) |
+| 2 | Sends the reasoning tasks to Claude (claude-sonnet-4-5) via the Anthropic API |
+| 3 | Submits Claude's answers back to the server (`POST /api/agent-auth`) |
+| 4 | Tests a protected GET route with the issued bearer token |
+| 5 | Verifies that the same route returns 401 without a token |
+| 6 | Tests a protected POST route with the bearer token |
+| 7 | Verifies that the POST route returns 401 without a token |
+
+A successful run means the full auth flow -- challenge, solve, authenticate, and use protected routes -- works end-to-end.
+
+## Automated Demo (Browser)
+
+Visit http://localhost:3000/demo/fishnet to run the full authentication flow interactively in the browser. This page lets you step through challenge retrieval, solving, and token verification without curl.
+
+## Checklist
+
+- [ ] Agent can discover the service via `/.well-known/skill.md`
+- [ ] Challenge endpoint returns reasoning tasks
+- [ ] Correct answers produce a valid bearer token
+- [ ] Protected endpoints reject requests without a valid token
+- [ ] Session join and state endpoints work with a valid token
+- [ ] Health endpoint responds at `/api/health`
+- [ ] Landing page loads at `/`
 
 ## Production Checklist
 
-Before deploying:
-- [ ] Replace in-memory storage with real database
-- [ ] Add proper rate limiting
-- [ ] Update Base URL in skill.md
-- [ ] Add monitoring/logging
-- [ ] Secure API key generation
-- [ ] Add session cleanup/garbage collection
+- [ ] `FISHNET_AUTH_SECRET` set to a strong random value
+- [ ] `NEXT_PUBLIC_BASE_URL` set to production URL
+- [ ] Base URL updated in `public/skill-content.md`
+- [ ] In-memory storage replaced with a persistent database
+- [ ] Rate limiting configured
+- [ ] Monitoring and logging enabled

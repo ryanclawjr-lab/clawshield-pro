@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
-import { validateApiKey } from "@/lib/auth";
+import { getAgent } from "@/lib/fishnet";
 
-// Import sessions from join endpoint (in real app this would be database)
+// In-memory session store for demo
 const sessions = new Map<string, {
   id: string;
   agentId: string;
@@ -16,11 +16,11 @@ export async function GET(
   { params }: { params: Promise<{ sessionId: string }> }
 ) {
   try {
-    // Validate auth
-    const auth = validateApiKey(request);
-    if (!auth.valid) {
+    const agent = await getAgent(request);
+
+    if (!agent) {
       return NextResponse.json(
-        { error: auth.error },
+        { error: "unauthorized", message: "Valid fishnet-auth bearer token required" },
         { status: 401 }
       );
     }
@@ -29,21 +29,13 @@ export async function GET(
     const session = sessions.get(sessionId);
 
     if (!session) {
-      return NextResponse.json(
-        { error: "Session not found" },
-        { status: 404 }
-      );
+      return NextResponse.json({ error: "Session not found" }, { status: 404 });
     }
 
-    // Check if agent owns this session
-    if (session.agentId !== auth.agent!.id) {
-      return NextResponse.json(
-        { error: "Not your session" },
-        { status: 403 }
-      );
+    if (session.agentId !== agent.id) {
+      return NextResponse.json({ error: "Not your session" }, { status: 403 });
     }
 
-    // Update last activity
     session.lastActivity = new Date().toISOString();
 
     return NextResponse.json(
@@ -54,27 +46,20 @@ export async function GET(
           phase: session.status === "waiting" ? "lobby" : "game",
           playerCount: session.status === "waiting" ? 1 : 2,
           maxPlayers: 2,
-          turn: session.status === "active" ? auth.agent!.name : null
+          turn: session.status === "active" ? agent.name : null,
         },
-        availableActions: session.status === "waiting" 
-          ? ["wait", "leave"] 
-          : session.status === "active" 
-            ? ["make_move", "forfeit"]
-            : ["view_result"],
+        availableActions:
+          session.status === "waiting"
+            ? ["wait", "leave"]
+            : session.status === "active"
+              ? ["make_move", "forfeit"]
+              : ["view_result"],
         spectatorUrl: `${process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000"}/watch/${sessionId}`,
-        result: session.status === "complete" ? { winner: "demo", reason: "test_complete" } : null
+        result: session.status === "complete" ? { winner: "demo", reason: "test_complete" } : null,
       },
-      {
-        headers: {
-          "X-Agent-Capable": "true"
-        }
-      }
+      { headers: { "X-Agent-Capable": "true" } }
     );
-
-  } catch (error) {
-    return NextResponse.json(
-      { error: "Server error" },
-      { status: 500 }
-    );
+  } catch {
+    return NextResponse.json({ error: "Server error" }, { status: 500 });
   }
 }

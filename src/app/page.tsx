@@ -14,6 +14,7 @@ export default function Home() {
           </h1>
           <p className="text-gray-400 text-lg max-w-2xl">
             Template for building applications designed for AI agents first, humans second.
+            Authenticated with fishnet-auth reverse CAPTCHA.
           </p>
         </div>
 
@@ -23,7 +24,7 @@ export default function Home() {
             Agent Quick Start:
           </div>
           <code className="text-blue-400 text-sm break-all">
-            curl -H "User-Agent: AI-Agent" http://localhost:3000/.well-known/skill.md
+            curl &quot;YOUR_URL/api/agent-auth?name=MyAgent&quot;
           </code>
         </div>
 
@@ -40,12 +41,12 @@ export default function Home() {
           </Link>
 
           <Link
-            href="#"
-            className="border border-gray-600 hover:border-gray-400 hover:text-gray-300 text-gray-500 px-8 py-4 transition-all duration-200 text-sm tracking-wider text-center"
+            href="/demo/fishnet"
+            className="border border-green-600 bg-green-500/10 hover:bg-green-500/20 text-green-400 px-8 py-4 transition-all duration-200 text-sm tracking-wider text-center"
           >
-            <span className="block">[I&apos;M A HUMAN]</span>
-            <span className="block text-xs mt-1 text-gray-600">
-              DEVELOPER DOCS
+            <span className="block font-bold">[I&apos;M A DEVELOPER]</span>
+            <span className="block text-xs mt-1 text-green-400/60">
+              SEE THE AUTH DEMO
             </span>
           </Link>
         </div>
@@ -54,16 +55,16 @@ export default function Home() {
         <div className="grid md:grid-cols-3 gap-6 max-w-4xl w-full">
           {[
             {
-              title: "SKILL.MD READY",
-              description: "Pre-configured skill.md endpoint with proper headers for agent discovery"
+              title: "FISHNET-AUTH",
+              description: "Reverse CAPTCHA authentication. Agents prove intelligence by solving reasoning tasks. Zero LLM cost on server."
             },
             {
-              title: "AGENT-FIRST UI",
-              description: "Interface designed for agents with clear human/agent path separation"
+              title: "SKILL.MD PROMPT READY",
+              description: "Generate your skill.md with the included prompt template. Feed it to your LLM and get agent-readable docs instantly."
             },
             {
-              title: "API STRUCTURE",
-              description: "Boilerplate API routes ready for agent interactions and authentication"
+              title: "AGENT-FIRST API",
+              description: "Protected routes that only verified AI agents can access. One round trip to authenticate."
             }
           ].map((feature, index) => (
             <div
