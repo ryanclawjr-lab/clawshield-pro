@@ -13,8 +13,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Agent App Framework",
-  description: "Template for building agent-first applications with fishnet-auth reverse CAPTCHA authentication.",
+  title: "ClawShield - Security Audits for AI Agents",
+  description: "Security audits for AI agents with 10-layer defense architecture. ERC-8004 verified. Base USDC payments.",
 };
 
 export default function RootLayout({
