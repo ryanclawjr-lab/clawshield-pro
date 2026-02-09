@@ -120,12 +120,12 @@ export default function Home() {
 
         {/* Services Grid */}
         <div id="services" className="mb-12 w-full max-w-5xl">
-          <h2 className="text-white text-center text-xl font-bold mb-6 tracking-wider">WHAT WE DO</h2>
+          <h2 className="text-white text-center text-xl font-bold mb-6 tracking-wider">SECURITY SERVICES</h2>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
             {services.map((service, index) => (
               <div
                 key={index}
-                className="border border-[#333] bg-[#12121a] p-5 hover:border-[#00d4aa]/50 hover:bg-[#1a1a2e] transition-all duration-300 cursor-pointer rounded-xl"
+                className="border border-[#333] bg-[#12121a] p-5 hover:border-[#00d4aa]/50 hover:bg-[#1a1a2e] transition-all duration-300 rounded-xl"
               >
                 <div className="flex items-center gap-3 mb-3">
                   <div className="w-10 h-10 rounded-lg flex items-center justify-center bg-[#00d4aa]/10">
@@ -149,12 +149,12 @@ export default function Home() {
         {/* Payment Info */}
         <div className="mb-12 p-6 bg-[#12121a] border border-[#333] rounded-2xl max-w-2xl w-full text-center">
           <div className="text-gray-400 text-xs mb-3 flex items-center justify-center gap-2">
-            <Lock className="w-3 h-3" /> ACCEPTED PAYMENT
+            <Lock className="w-3 h-3" /> PAY WITH USDC ON BASE
           </div>
-          <div className="text-[#00d4aa] font-bold text-sm mb-2">
-            USDC on Base Network
+          <div className="text-white font-bold text-sm mb-4">
+            Send payment to:
           </div>
-          <code className="text-gray-500 text-xs break-all block bg-[#0a0a0f] p-3 rounded-lg border border-[#333]">
+          <code className="text-[#00d4aa] text-xs break-all block bg-[#0a0a0f] p-4 rounded-lg border border-[#333] font-mono text-sm">
             0x687716fd518a5B257cE13455Ffd9967db309Ac1B
           </code>
         </div>
