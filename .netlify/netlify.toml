@@ -1,5 +1,5 @@
-redirectsOrigin = "inline"
 headersOrigin = "inline"
+redirectsOrigin = "inline"
 functionsDirectory = "/Users/ryanthawks/.openclaw/workspace/clawshield-pro/netlify/functions"
 functionsDirectoryOrigin = "config"
 
@@ -21,6 +21,7 @@ command = "npm run build"
 functions = "/Users/ryanthawks/.openclaw/workspace/clawshield-pro/netlify/functions"
 
 [build.environment]
+NODE_VERSION = "20"
 
 [build.processing]
 
@@ -35,10 +36,56 @@ functions = "/Users/ryanthawks/.openclaw/workspace/clawshield-pro/netlify/functi
 [build.services]
 
 [[headers]]
+for = "/*"
+
+[headers.values]
+X-Frame-Options = "DENY"
+X-XSS-Protection = "1; mode=block"
+Referrer-Policy = "strict-origin-when-cross-origin"
+Permissions-Policy = "camera=(), microphone=(), geolocation=()"
+
+[[headers]]
+for = "/*.js"
+
+[headers.values]
+Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+for = "/*.css"
+
+[headers.values]
+Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+for = "/*.png"
+
+[headers.values]
+Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+for = "/*.svg"
+
+[headers.values]
+Content-Type = "image/svg+xml"
+Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
 for = "/_next/static/*"
 
 [headers.values]
 Cache-Control = "public, max-age=31536000, immutable"
+
+[[redirects]]
+from = "/api/*"
+to = "/.netlify/functions/:splat"
+status = 200.0
+force = false
+
+[redirects.query]
+
+[redirects.conditions]
+
+[redirects.headers]
 
 [[redirects]]
 from = "/*"

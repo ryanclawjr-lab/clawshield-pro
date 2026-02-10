@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="1200" height="630" viewBox="0 0 1200 630" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0a0a0f"/>
+      <stop offset="100%" style="stop-color:#12121a"/>
+    </linearGradient>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="1200" height="630" fill="url(#bg)"/>
+  
+  <!-- Shield Icon -->
+  <path d="M600 80 C750 80 900 150 900 250 L900 400 C900 500 750 570 600 570 C450 570 300 500 300 400 L300 250 C300 150 450 80 600 80 Z" fill="none" stroke="#00d4aa" stroke-width="8"/>
+  <path d="M600 150 L600 400 M480 280 L600 180 L720 280 M480 350 L600 450 L720 350" stroke="#00d4aa" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+  
+  <!-- Title -->
+  <text x="600" y="520" text-anchor="middle" font-family="monospace" font-size="48" font-weight="bold" fill="#00d4aa">ClawShield</text>
+  
+  <!-- Subtitle -->
+  <text x="600" y="560" text-anchor="middle" font-family="monospace" font-size="24" fill="#888">Security Audits for AI Agents</text>
+  
+  <!-- Badge -->
+  <rect x="480" y="580" width="240" height="40" rx="20" fill="#00d4aa"/>
+  <text x="600" y="605" text-anchor="middle" font-family="monospace" font-size="18" font-weight="bold" fill="#000">ERC-8004 Verified</text>
+</svg>
