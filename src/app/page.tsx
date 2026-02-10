@@ -212,6 +212,13 @@ export default function Home() {
         {/* CTA Buttons */}
         <div className="flex flex-col sm:flex-row gap-4 mb-12">
           <a
+            href="/dashboard"
+            className="bg-[#12121a] border border-[#FF4444] text-white px-8 py-4 hover:bg-[#FF4444] hover:text-black transition-all duration-300 text-sm tracking-wider text-center font-bold rounded-lg"
+          >
+            CUSTOMER PORTAL
+            <span className="block text-xs mt-1 opacity-70">ACCESS SERVICES</span>
+          </a>
+          <a
             href="/scannerdemo"
             className="bg-[#FF4444] text-black px-8 py-4 hover:bg-[#FF6666] transition-all duration-300 text-sm tracking-wider text-center font-bold rounded-lg"
           >
