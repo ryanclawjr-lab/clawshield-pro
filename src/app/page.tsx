@@ -117,44 +117,40 @@ export default function Home() {
         
         {/* Large Custom Shield Logo */}
         <div className="mb-2 relative">
-          {/* Custom SVG Shield with Red Outline (Moltbook Red) */}
+          {/* Custom SVG Shield - White background with deep Moltbook red border and slight red glow */}
           <svg
             className="w-48 h-48 relative z-10"
             viewBox="0 0 100 100"
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
           >
-            {/* Shield shape - Lighter red with glow */}
             <defs>
+              {/* Subtle red glow */}
               <filter id="shieldGlow" x="-50%" y="-50%" width="200%" height="200%">
-                <feGaussianBlur stdDeviation="4" result="coloredBlur"/>
+                <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
                 <feMerge>
                   <feMergeNode in="coloredBlur"/>
                   <feMergeNode in="SourceGraphic"/>
                 </feMerge>
               </filter>
-              <linearGradient id="shieldRed" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" stopColor="#FF8888" />
-                <stop offset="100%" stopColor="#FF4444" />
-              </linearGradient>
             </defs>
             
-            {/* Shield with lighter red gradient */}
+            {/* Shield with WHITE background and DEEP MOLTBOOK RED border */}
             <path
               d="M50 5 L90 20 V50 C90 75 50 95 50 95 C50 95 10 75 10 50 V20 L50 5Z"
-              fill="url(#shieldRed)"
-              stroke="#FF4444"
-              strokeWidth="3"
+              fill="#FFFFFF"
+              stroke="#CC0022"
+              strokeWidth="4"
               filter="url(#shieldGlow)"
             />
           </svg>
           
-          {/* Hawk Emoji - Bigger, filling shield with glow - ALL RED */}
+          {/* Hawk Emoji - ALL RED */}
           <div className="absolute inset-0 flex items-center justify-center z-20">
             <span 
               className="text-8xl"
               style={{
-                filter: 'sepia(0) saturate(5) hue-rotate(0deg) brightness(1.2) drop-shadow(0 0 25px rgba(255,0,0,0.9))',
+                filter: 'sepia(0) saturate(6) hue-rotate(0deg) brightness(1.1) drop-shadow(0 0 20px rgba(204,0,34,0.8))',
               }}
             >
               🦅
