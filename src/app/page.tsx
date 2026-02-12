@@ -13,7 +13,11 @@ export default function Home() {
     { title: "Insider Threat Assessment", price: "0.5 USDC", desc: "Access patterns & privilege escalation audit", icon: Eye, time: "24h" },
     { title: "Capability-Gated Architecture", price: "1.5 USDC", desc: "Cryptographic boundaries & least-privilege design", icon: KeyRound, time: "24h" },
     { title: "Docker Sandbox Setup", price: "Varies", desc: "Isolated execution environment for untrusted code", icon: Zap, time: "Varies" },
-    { title: "Compliance Documentation", price: "Varies", desc: "Audit trail setup & liability protection docs", icon: FileText, time: "Varies" },
+    { title: "Solidity Quick Scan", price: "0.5 USDC", desc: "Pattern-based Solidity vulnerability check (104 patterns)", icon: Shield, time: "Instant" },
+    { title: "Solidity Full Audit", price: "1.5 USDC", desc: "104-pattern deep scan, PoC exploits, professional report", icon: ShieldCheck, time: "Same-day" },
+    { title: "Solidity Fuzz Tests", price: "1 USDC", desc: "Foundry invariant tests & Echidna property-based fuzzing", icon: Bug, time: "24h" },
+    { title: "DeFi Security Review", price: "2.5 USDC", desc: "Focus on reentrancy, oracle manipulation, DeFi vectors", icon: Activity, time: "24-48h" },
+    { title: "Compliance Documentation", desc: "Audit trail setup & liability protection docs", icon: FileText, time: "Varies" },
   ];
 
   const subscriptionTiers = [
