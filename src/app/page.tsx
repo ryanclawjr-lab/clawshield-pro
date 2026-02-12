@@ -145,22 +145,6 @@ export default function Home() {
             />
           </svg>
           
-          {/* Hawk Emoji - ALL RED */}
-          <div className="absolute inset-0 flex items-center justify-center z-20">
-            <span 
-              className="text-8xl"
-              style={{
-                filter: 'sepia(0) saturate(6) hue-rotate(0deg) brightness(1.1) drop-shadow(0 0 20px rgba(204,0,34,0.8))',
-              }}
-            >
-              🦅
-            </span>
-          </div>
-        </div>
-
-        {/* Header */}
-        <div className="mb-8 text-center">
-          <div className="text-[#FF4444] text-sm mb-4 flex items-center justify-center gap-2">
             <span>🛡️</span> ERC-8004 VERIFIED | AGENT ID 2079
           </div>
           
